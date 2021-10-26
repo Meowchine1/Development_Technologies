@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development_Technologies", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spusk", "Spusk\Spusk.csproj", "{206DABF3-BE27-4910-B53D-412A6A1DC846}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDictionary", "CustomDictionary\CustomDictionary.csproj", "{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{206DABF3-BE27-4910-B53D-412A6A1DC846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{206DABF3-BE27-4910-B53D-412A6A1DC846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{206DABF3-BE27-4910-B53D-412A6A1DC846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
