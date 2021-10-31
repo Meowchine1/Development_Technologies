@@ -1,83 +1,63 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CustomDictionary
 {
-    public class CustomDic<TKey, TValue> : ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
-        {
-            private List<TValue>[] _items;
-  
-        public int Count() => _items.Count();
-
-        int ICollection<KeyValuePair<TKey, TValue>>.Count => throw new NotImplementedException();
-        public bool IsReadOnly => throw new NotImplementedException();
+    public class CustomDic<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    {
+      private  Dictionary<TKey, TValue>[] _items;
 
         public CustomDic(int size)
-            {
-                _items = new List<TValue>[size];
-            }
+        {
+            _items = new Dictionary<TKey, TValue>[size];
+        }
 
-            private int GetHash(TKey key)
-            {
-                return Convert.ToInt32(key.ToString().Substring(0,1));
-            }
 
-            public void Add(TKey key, TValue value)
-            {
-                var k = GetHash(key);
-            if (_items[k] == null)
-            {
-                _items[k] = new List<TValue>() { value };//*
-            }
-            else
-            {
-                _items[k].Add(value);//*
-            }
-            }
-            public bool Search(TKey key, TValue value)
-            {
-                var k = GetHash(key);
-                return _items[k].Contains(value);//*
-            }
-       public  void Remove(TKey key, TValue value)
+        private int GetHash(TKey key)
+        {
+            return key.GetHashCode();
+        }
+
+
+        public void Add(TKey key, TValue value)
         {
             var k = GetHash(key);
-            if (_items[k] == null)  
-            {}
+            if (_items[k] == null)
+            {
+                _items[k] = new Dictionary<TKey, TValue>();  //*
+            }
             else
             {
-                _items[k].Remove(value);//*
+                _items[k].Add(key , value);//*
             }
         }
-   
 
-        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+
+        public bool Search(TKey key, TValue value)
         {
-            throw new NotImplementedException();
+            var k = GetHash(key);
+            return _items[k].ContainsKey(key) && _items[k].ContainsValue(value);//*
         }
 
-        void ICollection<KeyValuePair<TKey, TValue>>.Clear()
+
+
+        public void Remove(TKey key, TValue value)
         {
-            throw new NotImplementedException();
+            var k = GetHash(key);
+            if (_items[k] == null)
+            { }
+            else
+            {
+                if (_items[k].ContainsValue(value))
+                _items[k].Remove(key);//*
+            }
         }
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             throw new NotImplementedException();
         }
@@ -86,11 +66,48 @@ namespace CustomDictionary
         {
             throw new NotImplementedException();
         }
+    }
 
-        public bool Remove(KeyValuePair<TKey, TValue> item)
+    public class DictEnumerator<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>
+    {
+        private Dictionary<TKey, TValue>[] _items;
+        private int iterator = -1;
+
+        public static KeyValuePair<TKey, TValue> Convert_dict(Dictionary<TKey, TValue> _items)
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(KeyValuePair<TKey, TValue>));
+
+            return (KeyValuePair<TKey, TValue>)converter.ConvertFrom(_items);
+        }
+
+        public DictEnumerator(Dictionary<TKey, TValue>[] _items)
+        {
+            this._items = _items;
+        
+        }
+
+        public KeyValuePair<TKey, TValue> Current => Convert_dict(_items[iterator]); // ???
+
+
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
         {
             throw new NotImplementedException();
         }
+
+        public bool MoveNext()
+        {
+            iterator++;
+            return iterator < _items.Length;
+        }
+
+        public void Reset()
+        {
+            iterator = -1;
+        }
     }
-    }
+}
+
 

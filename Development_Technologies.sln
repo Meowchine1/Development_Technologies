@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spusk", "Spusk\Spusk.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDictionary", "CustomDictionary\CustomDictionary.csproj", "{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hashtable", "Hashtable\Hashtable.csproj", "{08CFC091-5A9F-4254-9C40-9AECB8598619}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF032AA-C8DD-4741-93A6-8B719AE8C8CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08CFC091-5A9F-4254-9C40-9AECB8598619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08CFC091-5A9F-4254-9C40-9AECB8598619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08CFC091-5A9F-4254-9C40-9AECB8598619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08CFC091-5A9F-4254-9C40-9AECB8598619}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
