@@ -7,9 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 namespace CustomDictionary
 {
-    public class CustomDic<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    public class CustomDic<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>,  ICollection<KeyValuePair<TKey, TValue>>
     {
       private  Dictionary<TKey, TValue>[] _items;
+
+        public int Count => throw new NotImplementedException();
+
+        public bool IsReadOnly => throw new NotImplementedException();
 
         public CustomDic(int size)
         {
@@ -59,10 +63,36 @@ namespace CustomDictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new DictEnumerator<TKey, TValue>(_items);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();
         }
@@ -94,7 +124,7 @@ namespace CustomDictionary
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public bool MoveNext()
@@ -109,10 +139,7 @@ namespace CustomDictionary
         }
 
 
-        public void katya()
-        {
-            
-        }
+       
     }
 }
 

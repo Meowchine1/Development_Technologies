@@ -16,6 +16,11 @@ namespace CustomDictionary
             hashtb.Add(11, "SGU");
             hashtb.Add(45, "EPAM");
 
+            foreach (var elem in hashtb)
+            {
+                
+            
+            }
             Console.WriteLine(hashtb.Search(45, "EPAM"));
 
         }
