@@ -107,6 +107,12 @@ namespace CustomDictionary
         {
             iterator = -1;
         }
+
+
+        public void katya()
+        {
+            
+        }
     }
 }
 
