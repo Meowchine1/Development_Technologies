@@ -9,34 +9,71 @@ namespace CustomDictionary
 {
     public class CustomDic<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>,  ICollection<KeyValuePair<TKey, TValue>>
     {
-      private  Dictionary<TKey, TValue>[] _items;
+        const int MaxArrayLimit = 3;
 
-        public int Count => throw new NotImplementedException();
+        private int _count = 0;
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        private LinkedList<KeyValuePair<TKey, TValue>>[] _data;
 
-        public CustomDic(int size)
+        public int Count => _count;
+
+        public bool IsReadOnly => false;
+
+        public CustomDic()
         {
-            _items = new Dictionary<TKey, TValue>[size];
+            _data = new LinkedList<KeyValuePair<TKey, TValue>>[8];
         }
-
-
-        private int GetHash(TKey key)
-        {
-            return key.GetHashCode();
-        }
-
 
         public void Add(TKey key, TValue value)
         {
-            var k = GetHash(key);
-            if (_items[k] == null)
+            var hash = key.GetHashCode();
+            var index = ((hash % _data.Length) + _data.Length) % _data.Length;
+
+            if (_data[index] is null)
             {
-                _items[k] = new Dictionary<TKey, TValue>();  //*
+                _data[index] = new LinkedList<KeyValuePair<TKey, TValue>>();
+                _data[index].AddLast(new KeyValuePair<TKey, TValue>(key, value));
+                _count++;
+
+                if (_data.Length / 3 <= _count)
+                {
+                    ReCreateArray();
+                }
+
+                return;
             }
-            else
+
+            foreach (var kvp in _data[index])
             {
-                _items[k].Add(key , value);//*
+                if (kvp.Key.Equals(key))
+                {
+                    throw new ArgumentException("Key already exists.", nameof(key));
+                }
+            }
+
+            _data[index].AddLast(new KeyValuePair<TKey, TValue>(key, value));
+            _count++;
+
+            if (_data.Length / 3 <= _count)
+            {
+                ReCreateArray();
+            }
+        }
+
+        private void ReCreateArray()
+        {
+            var newLength = _data.Length * 3;
+
+            var oldData = _data;
+
+            _data = new LinkedList<KeyValuePair<TKey, TValue>>[newLength];
+
+            foreach (var list in oldData)
+            {
+                foreach (var kvp in list)
+                {
+                    Add(kvp.Key, kvp.Value);
+                }
             }
         }
 
@@ -63,12 +100,24 @@ namespace CustomDictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return new DictEnumerator<TKey, TValue>(_items);
+            foreach (var linkedList in _data)
+            {
+                foreach (var kvp in linkedList)
+                {
+                    yield return kvp;
+                }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            foreach (var linkedList in _data)
+            {
+                foreach (var kvp in linkedList)
+                {
+                    yield return kvp;
+                }
+            }
         }
 
 
@@ -100,27 +149,19 @@ namespace CustomDictionary
 
     public class DictEnumerator<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>
     {
-        private Dictionary<TKey, TValue>[] _items;
-        private int iterator = -1;
+        private LinkedList<KeyValuePair<TKey, TValue>>[] _items;
+        private int _index = -1;
+        private LinkedListNode<KeyValuePair<TKey, TValue>> _currentNode;
 
-        public static KeyValuePair<TKey, TValue> Convert_dict(Dictionary<TKey, TValue> _items)
-        {
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof(KeyValuePair<TKey, TValue>));
-
-            return (KeyValuePair<TKey, TValue>)converter.ConvertFrom(_items);
-        }
-
-        public DictEnumerator(Dictionary<TKey, TValue>[] _items)
+        public DictEnumerator(LinkedList<KeyValuePair<TKey, TValue>>[] _items)
         {
             this._items = _items;
         
         }
 
-        public KeyValuePair<TKey, TValue> Current => Convert_dict(_items[iterator]); // ???
+        public KeyValuePair<TKey, TValue> Current => _currentNode.Value;
 
-
-
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => _currentNode.Value;
 
         public void Dispose()
         {
@@ -128,18 +169,33 @@ namespace CustomDictionary
         }
 
         public bool MoveNext()
-        {
-            iterator++;
-            return iterator < _items.Length;
+        { 
+            if (_currentNode != null && _currentNode.Next != null)
+            {
+                _currentNode = _currentNode.Next;
+                return true;
+            }
+
+            while (_currentNode is null)
+            {
+                _index++;
+
+                if (_index >= _items.Length)
+                {
+                    return false;
+                }
+
+                _currentNode = _items[_index].First;
+            }
+
+            return false;
         }
 
         public void Reset()
         {
-            iterator = -1;
-        }
-
-
-       
+            _index = -1;
+            _currentNode = null;
+        }   
     }
 }
 
