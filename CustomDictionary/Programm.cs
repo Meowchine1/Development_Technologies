@@ -11,17 +11,22 @@ namespace CustomDictionary
 
         static void Main(string[] args)
         {
-            var hashtb = new CustomDic<int, string>(100);
-            hashtb.Add(1, "Hash");
-            hashtb.Add(11, "SGU");
-            hashtb.Add(45, "EPAM");
+            var hashtb = new CustomDic<int , string>();
+            KeyValuePair<int, string> elem1 = new KeyValuePair<int, string>(11, "SGU");
+            hashtb.Add(elem1);
+            //  hashtb.Add(elem1);
 
-            foreach (var elem in hashtb)
+            KeyValuePair<int, string> elem2 = new KeyValuePair<int, string>(11, "Kat");
+            hashtb.Add(elem2);
+            KeyValuePair<int, string> elem3 = new KeyValuePair<int, string>(12, "Kat");
+            hashtb.Add(elem3);
+
+            foreach(var elem in hashtb)
             {
-                
-            
+                Console.WriteLine(" {0} {1}", elem.Key, elem.Value);
             }
-            Console.WriteLine(hashtb.Search(45, "EPAM"));
+           
+            
 
         }
 
